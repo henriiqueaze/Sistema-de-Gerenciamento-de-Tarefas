@@ -1,87 +1,133 @@
 from time import sleep
 
-nome_tarefa = list()
-descricao_tarefa = list()
+nome_tarefas = list()
+descricao_tarefas = list()
 
 
-def title():
-    titulo = 'Sistema de Gerenciamento de Tarefas'
-    tamanho = len(titulo) + 5
+def Titulo():
+    string = 'Sistema de Gerenciamento de Tarefas'
+    tamanho = len(string) + 6
     print('=' * tamanho)
-    print(titulo.center(tamanho))
+    print(string.center(tamanho))
     print('=' * tamanho)
     sleep(1.5)
 
 
+def TarefaNaoAdicionada():
+    print('Nenhuma tarefa foi adicionada ainda.')
+    sleep(1.5)
+
+
+def Mostrar_Tarefas():
+    for numerar, tarefa in enumerate(nome_tarefas):
+        print(f'[{numerar + 1}] - {tarefa}')
+
+
+def menu():
+    print('[1] - Adicionar Tarefa\n[2] - Exibir Tarefas\n[3] - Marcar como Concluída\n'
+          '[4] - Excluir Tarefa\n[5] - Sair')
+    resposta = int(input('Digite sua opção: '))
+
+    while resposta < 1 or resposta > 5:
+        print('\033[31mERRO!\033[m Resposta Inválida.')
+        sleep(1.5)
+        resposta = int(input('Digite sua opção: '))
+
+    return resposta
+
+
+def AdicionarTarefa():
+    nome_tarefas.append(str(input('Digite sua Tarefa: ')))
+    descricao_tarefas.append(str(input('Digite uma descrição da sua tarefa: ')))
+    print('Tarefa Adicionada!')
+    sleep(1.5)
+
+
+def ExibirTarefas():
+    if not nome_tarefas:
+        TarefaNaoAdicionada()
+
+    else:
+        Mostrar_Tarefas()
+        ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? [\033[32mS\033[m/\033[31mN\033[m]:'))
+
+        while ver_tarefas not in 'SsNn':
+            print('\033[31mERRO!\033[m Resposta Inválida.')
+            sleep(1.5)
+            ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? [\033[32mS\033[m/\033[31mN\033[m]:'))
+
+        if ver_tarefas in 'Ss':
+            resposta = int(input('Qual tarefa você deseja verificar? ')) - 1
+            print(descricao_tarefas[resposta])
+            sleep(3)
+
+        if ver_tarefas in 'Nn':
+            print('Carregando...')
+            sleep(1.5)
+
+
+def MarcarComoConcluida():
+    if not nome_tarefas:
+        TarefaNaoAdicionada()
+
+    else:
+        Mostrar_Tarefas()
+        resposta = int(input('Qual tarefa você deseja marcar como concluída? ')) - 1
+        nome_tarefas[resposta] = ''.join(c + '\u0336' for c in nome_tarefas[resposta])
+        print('Tarefa Concluída!')
+        sleep(1.5)
+
+
+def ExcluirTarefa():
+    if not nome_tarefas:
+        TarefaNaoAdicionada()
+
+    else:
+        Mostrar_Tarefas()
+        resposta = int(input('Qual tarefa você deseja \033[31mexcluir\033[m? ')) - 1
+        nome_tarefas.pop(resposta)
+        descricao_tarefas.pop(resposta)
+        print('Tarefa excluída!')
+        sleep(1.5)
+
+
+def Sair():
+    resposta = str(input('Tem certeza que deseja sair? [\033[32mS\033[m/\033[31mN\033[m]: '))
+    while resposta not in 'SsNn':
+        print('\033[31mERRO!\033[m Resposta Inválida.')
+        sleep(1.5)
+        resposta = str(input('Tem certeza que deseja sair? [\033[32mS\033[m/\033[31mN\033[m]: '))
+
+    if resposta in 'Ss':
+        print('Saindo...')
+        sleep(1.5)
+        print('Volte Sempre!')
+        exit()
+
+    if resposta in 'Nn':
+        print('Carregando...')
+        sleep(1.5)
+
+
 def programa():
-    title()
+    Titulo()
 
     while True:
-        resposta = int(input('[1] - Adicionar tarefa\n[2] - Exibir tarefas\n[3] - Marcar como concluída\n'
-                             '[4] - Excluir tarefa\n[5] - Sair do Programa\n'))
+        resposta_menu = menu()
+        if resposta_menu == 1:
+            AdicionarTarefa()
 
-        if resposta == 1:
-            nome_tarefa.append(str(input('Digite o nome da tarefa: ')))
-            descricao_tarefa.append(str(input('Faça uma descrição sobre a tarefa: ')))
-            print('Processando...')
-            sleep(1.5)
+        elif resposta_menu == 2:
+            ExibirTarefas()
 
-        if resposta == 2:
+        elif resposta_menu == 3:
+            MarcarComoConcluida()
 
-            if not nome_tarefa:
-                print('Você ainda não adicionou nenhuma tarefa')
-                sleep(1.5)
+        elif resposta_menu == 4:
+            ExcluirTarefa()
 
-            else:
-                for numero, numerar in enumerate(nome_tarefa):
-                    print(f'[{numero + 1}] - {numerar}')
-
-                ver_tarefa = int(input('Deseja ver a descrição de que tarefa? ')) - 1
-                print('Descrição:')
-                print(descricao_tarefa[ver_tarefa])
-                sleep(3)
-
-        if resposta == 3:
-
-            if not nome_tarefa:
-                print('Você ainda não adicionou nenhuma tarefa')
-                sleep(3)
-
-            else:
-                for numero, numerar in enumerate(nome_tarefa):
-                    print(f'[{numero + 1}] - {numerar}')
-
-                marcar_tarefa = int(input('Qual tarefa você deseja marcar como concluída? ')) - 1
-                nome_tarefa[marcar_tarefa] = ''.join(c + '\u0336' for c in nome_tarefa[marcar_tarefa])
-
-                print('Processando...')
-                sleep(1)
-                print('Tarefa Marcada como Concluída!')
-                sleep(1)
-
-        if resposta == 4:
-
-            if not nome_tarefa:
-                print('Você ainda não adicionou nenhuma tarefa')
-                sleep(1.5)
-
-            else:
-
-                for numero, numerar in enumerate(nome_tarefa):
-                    print(f'[{numero + 1}] - {numerar}')
-
-                deletar_tarefa = int(input('Qual tarefa você deseja excluir? ')) - 1
-                nome_tarefa.pop(deletar_tarefa)
-                descricao_tarefa.pop(deletar_tarefa)
-                print('Processando...')
-                sleep(1)
-                print('Tarefa Excluída!')
-                sleep(1)
-
-        if resposta == 5:
-            print('Saindo...')
-            sleep(1.5)
-            break
+        elif resposta_menu == 5:
+            Sair()
 
 
 programa()
