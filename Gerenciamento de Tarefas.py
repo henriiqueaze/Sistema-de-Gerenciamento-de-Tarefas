@@ -1,3 +1,6 @@
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
 from time import sleep
 
 nome_tarefas = list()
@@ -13,16 +16,6 @@ def Titulo():
     sleep(1.5)
 
 
-def TarefaNaoAdicionada():
-    print('Nenhuma tarefa foi adicionada ainda.')
-    sleep(1.5)
-
-
-def Mostrar_Tarefas():
-    for numerar, tarefa in enumerate(nome_tarefas):
-        print(f'[{numerar + 1}] - {tarefa}')
-
-
 def menu():
     print('[1] - Adicionar Tarefa\n[2] - Exibir Tarefas\n[3] - Marcar como Concluída\n'
           '[4] - Excluir Tarefa\n[5] - Sair')
@@ -34,6 +27,16 @@ def menu():
         resposta = int(input('Digite sua opção: '))
 
     return resposta
+
+
+def Mostrar_Tarefas():
+    for numerar, tarefa in enumerate(nome_tarefas):
+        print(f'[{numerar + 1}] - {tarefa}')
+
+
+def TarefaNaoAdicionada():
+    print('Nenhuma tarefa foi adicionada ainda.')
+    sleep(1.5)
 
 
 def AdicionarTarefa():
@@ -49,12 +52,12 @@ def ExibirTarefas():
 
     else:
         Mostrar_Tarefas()
-        ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? [\033[32mS\033[m/\033[31mN\033[m]:'))
+        ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? '))
 
         while ver_tarefas not in 'SsNn':
             print('\033[31mERRO!\033[m Resposta Inválida.')
             sleep(1.5)
-            ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? [\033[32mS\033[m/\033[31mN\033[m]:'))
+            ver_tarefas = str(input('Deseja ver a descrição de alguma tarefa? '))
 
         if ver_tarefas in 'Ss':
             resposta = int(input('Qual tarefa você deseja verificar? ')) - 1
@@ -109,7 +112,7 @@ def Sair():
         sleep(1.5)
 
 
-def programa():
+"""def programa():
     Titulo()
 
     while True:
@@ -130,4 +133,49 @@ def programa():
             Sair()
 
 
-programa()
+programa()"""
+
+#Primeiro Botão - Configurações (Incompleto)
+def JanelaAdicionarTarefa():
+    adicionar_tarefa_janela = Tk()
+    adicionar_tarefa_janela.title('Adicionar Tarefa')
+    adicionar_tarefa_janela.config(background="#35403A")
+    adicionar_tarefa_janela.geometry('300x200')
+
+
+#Janela de Tarefas Configurações
+janela = Tk()
+janela.title('Gerenciamento de Tarefas')
+janela.geometry('500x450')
+janela.config(background="#262A40")
+
+#Texto Inicial
+titulo = Label(janela, text='Sistema de Gerenciamento', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
+titulo.place(x=75, y=15)
+
+titulo1 = Label(janela, text='de Tarefas', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
+titulo1.place(x=180, y=50)
+
+#Primeiro Botão
+adicionar_tarefa_botao = Button(janela, text="Adicionar Tarefa", bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
+                                activeforeground="black", font="Arial 12 bold", height=2, width=36,
+                                command=JanelaAdicionarTarefa)
+adicionar_tarefa_botao.place(x=70, y=115)
+
+#Segundo Botão
+exibir_tarefa_botao = Button(janela, text='Exibir Tarefas', bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
+                            activeforeground="black", font="Arial 12 bold", height=2, width=36, command=ExibirTarefas)
+exibir_tarefa_botao.place(x=70, y=195)
+
+#Terceiro Botão
+marcar_como_concluida_botao = Button(janela, text='Marcar Como Concluída', bg="#416CA6", fg="#0E1521",
+                                     font="Arial 12 bold", height=2, width=36, activebackground="#85BFF2",
+                                     activeforeground="black", command=MarcarComoConcluida)
+marcar_como_concluida_botao.place(x=70, y=275)
+
+#Quarto Botão
+excluir_tarefa_botao = Button(janela, text='Excluir Tarefa', bg="#416CA6", fg="#202336", font="Arial 12 bold", height=2,
+                              width=36, activebackground="black", activeforeground="#0D2673", command=ExcluirTarefa)
+excluir_tarefa_botao.place(x=70, y=355)
+
+janela.mainloop()
