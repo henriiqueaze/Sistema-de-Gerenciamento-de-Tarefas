@@ -171,8 +171,10 @@ def JanelaAdicionarTarefa():
     botao_enviar = Button(adicionar_tarefa_janela, text='Enviar', height=1, width=5, command=Enviar_Tarefa)
     botao_enviar.place(x=125, y=150)
 
+    adicionar_tarefa_janela.mainloop()
 
-#Envio de Tarefas para as listas e fim da janela
+
+# Envio de Tarefas para as listas e fim da janela
 def Enviar_Tarefa():
     enviar_desc = escrever_desc.get()
     enviar_nome = escrever_nome.get()
@@ -193,6 +195,65 @@ def Enviar_Tarefa():
         messagebox.showinfo('Alerta!', 'Sua tarefa e descrição foram enviados!')
         escrever_desc.focus_force()
         adicionar_tarefa_janela.destroy()
+
+
+# Nenhuma tarefa adicionada função
+def Nenhuma_Tarefa_Adicionada(janela):
+    nenhuma_tarefa_adicionada_texto1 = Label(janela, text='Nenhuma tarefa foi', font="Arial 19 bold",
+                                             bg="#262A40", fg="#F2F2F2")
+    nenhuma_tarefa_adicionada_texto2 = Label(janela, text='adicionada ainda.', font="Arial 19 bold",
+                                             bg="#262A40", fg="#F2F2F2")
+    nenhuma_tarefa_adicionada_texto1.place(x=35, y=60)
+    nenhuma_tarefa_adicionada_texto2.place(x=43, y=100)
+
+
+# Segundo Botão - Configurações
+def JanelaExibirTarefa():
+    exibir_tarefa_janela = Tk()
+    exibir_tarefa_janela.title('Exibir Tarefa')
+    exibir_tarefa_janela.config(background="#262A40")
+    exibir_tarefa_janela.geometry('300x200')
+    exibir_tarefa_janela.resizable(False, False)
+
+    if not nome_tarefas and not descricao_tarefas:
+        Nenhuma_Tarefa_Adicionada(exibir_tarefa_janela)
+
+    else:
+        nomes = Label(exibir_tarefa_janela, text='Tarefas: ')
+        descricao = Label(exibir_tarefa_janela, text='Descrição: ')
+
+        canvas = tkinter.Canvas(exibir_tarefa_janela, width=400, height=400, bg="#262A40")
+        canvas.pack()
+
+        canvas.create_line(200, 0, 200, 400, fill="black")
+
+        tarefas = tkinter.Label(exibir_tarefa_janela, text=nome_tarefas)
+        tarefas.place(x=75, y=100)
+
+
+
+# Terceiro Botão - Configurações
+def JanelaMarcarComoConcluida():
+    marcar_como_concluida_janela = Tk()
+    marcar_como_concluida_janela.title('Marcar Como Concluída')
+    marcar_como_concluida_janela.config(background="#262A40")
+    marcar_como_concluida_janela.geometry('300x200')
+    marcar_como_concluida_janela.resizable(False, False)
+
+    if not nome_tarefas and not descricao_tarefas:
+        Nenhuma_Tarefa_Adicionada(marcar_como_concluida_janela)
+
+
+# Quarto Botão - Configurações
+def JanelaExcluirTarefa():
+    excluir_tarefa_janela = Tk()
+    excluir_tarefa_janela.title('Excluir Tarefa')
+    excluir_tarefa_janela.config(background="#262A40")
+    excluir_tarefa_janela.geometry('300x200')
+    excluir_tarefa_janela.resizable(False, False)
+
+    if not nome_tarefas and not descricao_tarefas:
+        Nenhuma_Tarefa_Adicionada(excluir_tarefa_janela)
 
 
 # Janela de Tarefas Configurações
@@ -217,18 +278,20 @@ adicionar_tarefa_botao.place(x=70, y=115)
 
 # Segundo Botão
 exibir_tarefa_botao = Button(janela, text='Exibir Tarefas', bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
-                             activeforeground="black", font="Arial 12 bold", height=2, width=36, command=ExibirTarefas)
+                             activeforeground="black", font="Arial 12 bold", height=2, width=36,
+                             command=JanelaExibirTarefa)
 exibir_tarefa_botao.place(x=70, y=195)
 
 # Terceiro Botão
 marcar_como_concluida_botao = Button(janela, text='Marcar Como Concluída', bg="#416CA6", fg="#0E1521",
                                      font="Arial 12 bold", height=2, width=36, activebackground="#85BFF2",
-                                     activeforeground="black", command=MarcarComoConcluida)
+                                     activeforeground="black", command=JanelaMarcarComoConcluida)
 marcar_como_concluida_botao.place(x=70, y=275)
 
 # Quarto Botão
 excluir_tarefa_botao = Button(janela, text='Excluir Tarefa', bg="#416CA6", fg="#202336", font="Arial 12 bold", height=2,
-                              width=36, activebackground="black", activeforeground="#0D2673", command=ExcluirTarefa)
+                              width=36, activebackground="#85BFF2", activeforeground="black",
+                              command=JanelaExcluirTarefa)
 excluir_tarefa_botao.place(x=70, y=355)
 
 janela.mainloop()
