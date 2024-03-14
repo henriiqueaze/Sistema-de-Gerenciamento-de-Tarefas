@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
@@ -135,45 +136,97 @@ def Sair():
 
 programa()"""
 
-#Primeiro Botão - Configurações (Incompleto)
+
+# Primeiro Botão - Configurações
 def JanelaAdicionarTarefa():
+    # Configurações da Janela
+    global adicionar_tarefa_janela
     adicionar_tarefa_janela = Tk()
     adicionar_tarefa_janela.title('Adicionar Tarefa')
-    adicionar_tarefa_janela.config(background="#35403A")
+    adicionar_tarefa_janela.config(background="#262A40")
     adicionar_tarefa_janela.geometry('300x200')
+    adicionar_tarefa_janela.resizable(False, False)
+
+    # Adicionando o texto da janela
+    adicionar_tarefa_texto1 = Label(adicionar_tarefa_janela, text='Adicionar nome e', font="Arial 15 bold",
+                                    bg="#262A40", fg="#F2F2F2")
+    adicionar_tarefa_texto2 = Label(adicionar_tarefa_janela, text='descrição da tarefa', font="Arial 15 bold",
+                                    bg="#262A40", fg="#F2F2F2")
+    adicionar_tarefa_texto1.place(x=64, y=10)
+    adicionar_tarefa_texto2.place(x=55, y=35)
+
+    # Escrever a primeira Entry
+    global escrever_nome
+    escrever_nome = Entry(adicionar_tarefa_janela, width=35)
+    escrever_nome.place(x=45, y=80)
+    escrever_nome.insert(0, 'Nome:')
+
+    # Escrever a segunda Entry
+    global escrever_desc
+    escrever_desc = Entry(adicionar_tarefa_janela, width=35)
+    escrever_desc.place(x=45, y=110)
+    escrever_desc.insert(0, 'Descrição:')
+
+    # Botão enviar
+    botao_enviar = Button(adicionar_tarefa_janela, text='Enviar', height=1, width=5, command=Enviar_Tarefa)
+    botao_enviar.place(x=125, y=150)
 
 
-#Janela de Tarefas Configurações
+#Envio de Tarefas para as listas e fim da janela
+def Enviar_Tarefa():
+    enviar_desc = escrever_desc.get()
+    enviar_nome = escrever_nome.get()
+
+    if enviar_desc == '' or enviar_nome == '':
+        messagebox.showerror("Erro", "Por favor, insira um nome e uma descrição para a tarefa.")
+        escrever_nome.focus_force()
+
+    else:
+        escrever_nome.delete(0, 'end')
+        escrever_desc.delete(0, 'end')
+
+        # Enviando as respostas das Entrys para as listas
+        descricao_tarefas.append(enviar_desc)
+        nome_tarefas.append(enviar_nome)
+
+        # Alerta da tarefa e exlusão da imagem
+        messagebox.showinfo('Alerta!', 'Sua tarefa e descrição foram enviados!')
+        escrever_desc.focus_force()
+        adicionar_tarefa_janela.destroy()
+
+
+# Janela de Tarefas Configurações
 janela = Tk()
 janela.title('Gerenciamento de Tarefas')
 janela.geometry('500x450')
 janela.config(background="#262A40")
+janela.resizable(False, False)
 
-#Texto Inicial
+# Texto Inicial
 titulo = Label(janela, text='Sistema de Gerenciamento', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
 titulo.place(x=75, y=15)
 
 titulo1 = Label(janela, text='de Tarefas', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
 titulo1.place(x=180, y=50)
 
-#Primeiro Botão
+# Primeiro Botão
 adicionar_tarefa_botao = Button(janela, text="Adicionar Tarefa", bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
                                 activeforeground="black", font="Arial 12 bold", height=2, width=36,
                                 command=JanelaAdicionarTarefa)
 adicionar_tarefa_botao.place(x=70, y=115)
 
-#Segundo Botão
+# Segundo Botão
 exibir_tarefa_botao = Button(janela, text='Exibir Tarefas', bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
-                            activeforeground="black", font="Arial 12 bold", height=2, width=36, command=ExibirTarefas)
+                             activeforeground="black", font="Arial 12 bold", height=2, width=36, command=ExibirTarefas)
 exibir_tarefa_botao.place(x=70, y=195)
 
-#Terceiro Botão
+# Terceiro Botão
 marcar_como_concluida_botao = Button(janela, text='Marcar Como Concluída', bg="#416CA6", fg="#0E1521",
                                      font="Arial 12 bold", height=2, width=36, activebackground="#85BFF2",
                                      activeforeground="black", command=MarcarComoConcluida)
 marcar_como_concluida_botao.place(x=70, y=275)
 
-#Quarto Botão
+# Quarto Botão
 excluir_tarefa_botao = Button(janela, text='Excluir Tarefa', bg="#416CA6", fg="#202336", font="Arial 12 bold", height=2,
                               width=36, activebackground="black", activeforeground="#0D2673", command=ExcluirTarefa)
 excluir_tarefa_botao.place(x=70, y=355)
