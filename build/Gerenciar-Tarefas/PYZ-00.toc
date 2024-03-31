@@ -1,5 +1,4 @@
-('C:\\Users\\guana\\Desktop\\Sistema de Gerenciamento de '
- 'Tarefas\\build\\Gerenciar-Tarefas\\PYZ-00.pyz',
+('C:\\Users\\guana\\Documents\\MeusProjetos\\Sistema-de-Gerenciamento-de-Tarefas\\build\\Gerenciar-Tarefas\\PYZ-00.pyz',
  [('_compat_pickle',
    'C:\\Users\\guana\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_compat_pickle.py',
    'PYMODULE'),
