@@ -297,7 +297,7 @@ marcar_como_concluida_botao = tk.Button(janela, text='Marcar Como Concluída', b
 marcar_como_concluida_botao.place(x=70, y=275)
 
 #Botão excluir tarefa.
-excluir_tarefa_botao = tk.Button(janela, text='Excluir Tarefa', bg="#416CA6", fg="#202336", font="Arial 12 bold",
+excluir_tarefa_botao = tk.Button(janela, text='Excluir Tarefa', bg="#416CA6", fg="#0E1521", font="Arial 12 bold",
                                  height=2,
                                  width=36, activebackground="#85BFF2", activeforeground="black",
                                  command=JanelaExcluirTarefa)
