@@ -1,11 +1,39 @@
 import tkinter as tk
+from arquivo import *
 from tkinter import messagebox
 
-#Armazenando os nomes e descrições das tarefas.
+#Criando o arquivo .txt caso ele não exista
+arquivo = 'tarefas.txt'
+
+if not Arquivo_Existe(arquivo):
+    Criar_Arquivo(arquivo)
+
 nome_tarefas = []
 descricao_tarefas = []
 
-#Função para enviar uma nova tarefa.
+#Carrega as tarefas já existentes do arquivo tarefas.txt
+try:
+    with open(arquivo, 'r') as arquivo_tarefas:
+        for linha in arquivo_tarefas:
+            nome, descricao = linha.strip().split('|')
+            nome_tarefas.append(nome)
+            descricao_tarefas.append(descricao)
+
+except FileNotFoundError:
+    print(f"O arquivo '{arquivo}' não foi encontrado.")
+
+#------------><-------------#
+
+#Função para salvar tarefas no arquivo.
+def Salvar_Tarefas():
+    try:
+        with open(arquivo, 'w') as arquivo_tarefas:
+            for nome, descricao in zip(nome_tarefas, descricao_tarefas):
+                arquivo_tarefas.write(f"{nome}|{descricao}\n")
+
+    except IOError:
+        print(f"Erro ao salvar as tarefas no arquivo '{arquivo}'.")
+
 def Enviar_Tarefa():
     enviar_desc = escrever_desc.get()
     enviar_nome = escrever_nome.get()
@@ -20,11 +48,12 @@ def Enviar_Tarefa():
         escrever_nome.delete(0, 'end')
         escrever_desc.delete(0, 'end')
 
-        #Adicionar tarefa nova às listas.
+        #Adicionar tarefa nova nas listas.
         descricao_tarefas.append(enviar_desc)
         nome_tarefas.append(enviar_nome)
 
-        #Mostrar mensagem de sucesso.
+        Salvar_Tarefas()
+
         messagebox.showinfo('Alerta!', 'Sua tarefa e descrição foram enviados!')
         adicionar_tarefa_janela.destroy()
 
@@ -34,7 +63,7 @@ def Enviar_Tarefa():
 def Enviar_Numero():
     global marcar_como_concluida_numero
 
-    # Pegando o número e convertendo para inteiro.
+    #Pegando o número e convertendo para inteiro.
     marcar_numero_str = marcar_como_concluida_numero.get()
 
     # Verificar se a string não tem nada.
