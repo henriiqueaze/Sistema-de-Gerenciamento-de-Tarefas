@@ -21,4 +21,4 @@
 <h2>Autor</h2>
 <p>Linkedin: <a href="https://www.linkedin.com/in/henrique-azevedo-b2195b2b0/">https://www.linkedin.com/in/henrique-azevedo-b2195b2b0/</a>
 <p>Instagram: <a href="https://www.instagram.com/henriiqueaze/"></a>https://www.instagram.com/henriiqueaze/</p>
-<p>Email: <a href="mailto:henriique.aze.dev@gmail.com">henriique.aze.dev@gmail.com</a></p>
+<p>Email: <a href="mailto:henriquee.aze.dev@gmail.com">henriique.aze.dev@gmail.com</a></p>
