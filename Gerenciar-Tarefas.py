@@ -5,10 +5,10 @@ class Tarefa:
     def __init__(self, nome, descricao):
         self.nome = nome
         self.descricao = descricao
+        self.concluida = False
 
     def marcar_concluida(self):
-        self.nome = ''.join(c + '\u0336' for c in self.nome)
-        self.descricao = ''.join(c + '\u0336' for c in self.descricao)
+        self.concluida = True
 
 def Arquivo_Existe(nome_arquivo):
     try:
@@ -36,8 +36,10 @@ class GerenciadorTarefas:
         try:
             with open(self.arquivo, 'r') as arquivo_tarefas:
                 for linha in arquivo_tarefas:
-                    nome, descricao = linha.strip().split('|')
-                    self.tarefas.append(Tarefa(nome, descricao))
+                    nome, descricao, concluida = linha.strip().split('|')
+                    tarefa = Tarefa(nome, descricao)
+                    tarefa.concluida = concluida == 'True'
+                    self.tarefas.append(tarefa)
         except FileNotFoundError:
             print(f"O arquivo '{self.arquivo}' não foi encontrado.")
 
@@ -45,7 +47,7 @@ class GerenciadorTarefas:
         try:
             with open(self.arquivo, 'w') as arquivo_tarefas:
                 for tarefa in self.tarefas:
-                    arquivo_tarefas.write(f"{tarefa.nome}|{tarefa.descricao}\n")
+                    arquivo_tarefas.write(f"{tarefa.nome}|{tarefa.descricao}|{tarefa.concluida}\n")
         except IOError:
             print(f"Erro ao salvar as tarefas no arquivo '{self.arquivo}'.")
 
@@ -98,6 +100,16 @@ class InterfaceTarefa:
                                    command=self.janela_excluir_tarefa)
         botao_excluir.place(x=70, y=355)
 
+    def on_focus_in(self, entry, placeholder):
+        if entry.get() == placeholder:
+            entry.delete(0, tk.END)
+            entry.config(fg="black")
+
+    def on_focus_out(self, entry, placeholder):
+        if entry.get() == "":
+            entry.insert(0, placeholder)
+            entry.config(fg="#808080")
+
     def janela_adicionar_tarefa(self):
         janela = tk.Toplevel(self.janela)
         janela.title('Adicionar Tarefa')
@@ -108,18 +120,24 @@ class InterfaceTarefa:
         tk.Label(janela, text='Adicionar nome e', font="Arial 15 bold", bg="#262A40", fg="#F2F2F2").place(x=64, y=10)
         tk.Label(janela, text='descrição da tarefa', font="Arial 15 bold", bg="#262A40", fg="#F2F2F2").place(x=55, y=35)
 
-        nome_entry = tk.Entry(janela, width=35)
+        nome_entry = tk.Entry(janela, width=35, fg="#808080")
         nome_entry.place(x=45, y=80)
         nome_entry.insert(0, 'Nome:')
 
-        descricao_entry = tk.Entry(janela, width=35)
+        descricao_entry = tk.Entry(janela, width=35, fg="#808080")
         descricao_entry.place(x=45, y=110)
         descricao_entry.insert(0, 'Descrição:')
+
+        nome_entry.bind("<FocusIn>", lambda e: self.on_focus_in(nome_entry, 'Nome:'))
+        nome_entry.bind("<FocusOut>", lambda e: self.on_focus_out(nome_entry, 'Nome:'))
+
+        descricao_entry.bind("<FocusIn>", lambda e: self.on_focus_in(descricao_entry, 'Descrição:'))
+        descricao_entry.bind("<FocusOut>", lambda e: self.on_focus_out(descricao_entry, 'Descrição:'))
 
         def enviar():
             nome = nome_entry.get()
             descricao = descricao_entry.get()
-            if not nome or not descricao:
+            if not nome or nome == 'Nome:' or not descricao or descricao == 'Descrição:':
                 messagebox.showerror("Erro", "Por favor, insira um nome e uma descrição para a tarefa.")
                 return
             self.gerenciador.adicionar_tarefa(nome, descricao)
@@ -140,8 +158,14 @@ class InterfaceTarefa:
         janela.resizable(False, False)
 
         tk.Label(janela, text='Tarefas:          Descrição:', bg='#262A40', fg='white', font='Arial 15 bold').place(x=27, y=25)
-        tarefas = '\n'.join(f"{i+1}. {tarefa.nome}" for i, tarefa in enumerate(self.gerenciador.tarefas))
-        descricoes = '\n'.join(f"{tarefa.descricao}" for tarefa in self.gerenciador.tarefas)
+
+        tarefas = ''
+        descricoes = ''
+        for i, tarefa in enumerate(self.gerenciador.tarefas):
+            nome = ''.join(c + '\u0336' for c in tarefa.nome) if tarefa.concluida else tarefa.nome
+            descricao = ''.join(c + '\u0336' for c in tarefa.descricao) if tarefa.concluida else tarefa.descricao
+            tarefas += f"{i + 1}. {nome}\n"
+            descricoes += f"{descricao}\n"
 
         tk.Label(janela, text=tarefas, bg='#262A40', fg='white', font='Arial 12 bold').place(x=38, y=63)
         tk.Label(janela, text=descricoes, bg='#262A40', fg='white', font='Arial 12 bold').place(x=175, y=63)
@@ -158,19 +182,28 @@ class InterfaceTarefa:
         janela.resizable(False, False)
 
         tk.Label(janela, text='Tarefas:          Descrição:', bg='#262A40', fg='white', font='Arial 15 bold').place(x=27, y=25)
-        tarefas = '\n'.join(f"{i+1}. {tarefa.nome}" for i, tarefa in enumerate(self.gerenciador.tarefas))
-        descricoes = '\n'.join(f"{tarefa.descricao}" for tarefa in self.gerenciador.tarefas)
+
+        tarefas = ''
+        descricoes = ''
+        for i, tarefa in enumerate(self.gerenciador.tarefas):
+            nome = ''.join(c + '\u0336' for c in tarefa.nome) if tarefa.concluida else tarefa.nome
+            descricao = ''.join(c + '\u0336' for c in tarefa.descricao) if tarefa.concluida else tarefa.descricao
+            tarefas += f"{i + 1}. {nome}\n"
+            descricoes += f"{descricao}\n"
 
         tk.Label(janela, text=tarefas, bg='#262A40', fg='white', font='Arial 12 bold').place(x=38, y=63)
         tk.Label(janela, text=descricoes, bg='#262A40', fg='white', font='Arial 12 bold').place(x=175, y=63)
 
-        numero_entry = tk.Entry(janela, width=20)
+        numero_entry = tk.Entry(janela, width=20, fg="#808080")
         numero_entry.place(x=85, y=141)
         numero_entry.insert(0, 'Número da Tarefa:')
 
+        numero_entry.bind("<FocusIn>", lambda e: self.on_focus_in(numero_entry, 'Número da Tarefa:'))
+        numero_entry.bind("<FocusOut>", lambda e: self.on_focus_out(numero_entry, 'Número da Tarefa:'))
+
         def enviar():
             try:
-                indice = int(numero_entry.get()) 
+                indice = int(numero_entry.get()) - 1
                 self.gerenciador.marcar_concluida(indice)
                 messagebox.showinfo('Alerta!', 'Sua tarefa foi marcada como concluída!')
                 janela.destroy()
@@ -191,15 +224,24 @@ class InterfaceTarefa:
         janela.resizable(False, False)
 
         tk.Label(janela, text='Tarefas:          Descrição:', bg='#262A40', fg='white', font='Arial 15 bold').place(x=27, y=25)
-        tarefas = '\n'.join(f"{i+1}. {tarefa.nome}" for i, tarefa in enumerate(self.gerenciador.tarefas))
-        descricoes = '\n'.join(f"{tarefa.descricao}" for tarefa in self.gerenciador.tarefas)
+
+        tarefas = ''
+        descricoes = ''
+        for i, tarefa in enumerate(self.gerenciador.tarefas):
+            nome = ''.join(c + '\u0336' for c in tarefa.nome) if tarefa.concluida else tarefa.nome
+            descricao = ''.join(c + '\u0336' for c in tarefa.descricao) if tarefa.concluida else tarefa.descricao
+            tarefas += f"{i + 1}. {nome}\n"
+            descricoes += f"{descricao}\n"
 
         tk.Label(janela, text=tarefas, bg='#262A40', fg='white', font='Arial 12 bold').place(x=38, y=63)
         tk.Label(janela, text=descricoes, bg='#262A40', fg='white', font='Arial 12 bold').place(x=175, y=63)
 
-        numero_entry = tk.Entry(janela, width=20)
+        numero_entry = tk.Entry(janela, width=20, fg="#808080")
         numero_entry.place(x=85, y=141)
         numero_entry.insert(0, 'Número da Tarefa:')
+
+        numero_entry.bind("<FocusIn>", lambda e: self.on_focus_in(numero_entry, 'Número da Tarefa:'))
+        numero_entry.bind("<FocusOut>", lambda e: self.on_focus_out(numero_entry, 'Número da Tarefa:'))
 
         def enviar():
             try:
@@ -213,5 +255,5 @@ class InterfaceTarefa:
         tk.Button(janela, text='Enviar', height=1, width=5, command=enviar).place(x=120, y=161)
 
 if __name__ == "__main__":
-    gerenciador = GerenciadorTarefas("assets/Tarefas/Tarefas.txt")
+    gerenciador = GerenciadorTarefas("/assets/Tarefas/Tarefas.txt")
     InterfaceTarefa(gerenciador)
