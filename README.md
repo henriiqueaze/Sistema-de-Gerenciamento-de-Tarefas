@@ -9,7 +9,7 @@
 <p>O Sistema de Gerenciamento de Tarefas é um projeto desenvolvido para aplicar os conhecimentos em <b>Python</b> e <b>Tkinter</b>. Ele oferece uma forma prática de organizar tarefas diárias, sejam pessoais, acadêmicas ou profissionais. Os usuários podem adicionar tarefas, fornecendo nome e descrição, também podendo marcá-las como concluídas, destacando-as na lista. A interface é simples, com botões intuitivos. O projeto oferece feedback visual para ações realizadas. É uma ferramenta útil para organizar atividades diárias de forma eficiente.</p>
 
 <h2>Layout do Projeto</h2>
-<img src="imagens/foto_menu.png" alt="Menu">
+<img src="assets/Images/foto_menu.png" alt="Menu">
 
 <h2>Tecnologias Utilizadas</h2>
 <ul type="disk">
