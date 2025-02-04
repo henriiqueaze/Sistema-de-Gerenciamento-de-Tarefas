@@ -1,6 +1,6 @@
-from GerenciadorTarefas import GerenciadorTarefas
-from InterfaceTarefa import InterfaceTarefa
+from GerenciadorTarefas import gerenciadorTarefas
+from InterfaceTarefa import interfaceTarefa
 
 if __name__ == "__main__":
-    gerenciador = GerenciadorTarefas("assets/Tarefas/Tarefas.txt")
-    InterfaceTarefa(gerenciador)
+    gerenciador = gerenciadorTarefas("assets/Tarefas/Tarefas.txt")
+    interfaceTarefa(gerenciador)
