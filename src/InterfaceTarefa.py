@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class InterfaceTarefa:
+class interfaceTarefa:
     def __init__(self, gerenciador):
         self.gerenciador = gerenciador
         self.janela = tk.Tk()
@@ -9,29 +9,29 @@ class InterfaceTarefa:
         self.janela.geometry('500x450')
         self.janela.config(background="#262A40")
         self.janela.resizable(False, False)
-        self.configurar_interface()
+        self.configurarInterface()
         self.janela.mainloop()
 
-    def configurar_interface(self):
+    def configurarInterface(self):
         titulo = tk.Label(self.janela, text='Sistema de Gerenciamento', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
         titulo.place(x=75, y=15)
         titulo1 = tk.Label(self.janela, text='de Tarefas', font="Arial 20 bold", bg="#262A40", fg="#F2F2F2")
         titulo1.place(x=180, y=50)
 
         botoes = [
-            ("Adicionar Tarefa", self.janela_adicionar_tarefa, 115),
-            ("Exibir Tarefas", self.janela_exibir_tarefa, 195),
-            ("Marcar Como Concluída", self.janela_marcar_concluida, 275),
-            ("Excluir Tarefa", self.janela_excluir_tarefa, 355)
+            ("Adicionar Tarefa", self.janelaAdicionarTarefa, 115),
+            ("Exibir Tarefas", self.janelaExibirTarefa, 195),
+            ("Marcar Como Concluída", self.janelaMarcarConcluida, 275),
+            ("Excluir Tarefa", self.janelaExcluirTarefa, 355)
         ]
 
-        for texto, comando, y in botoes:
+        for texto, comando, yPos in botoes:
             tk.Button(
                 self.janela, text=texto, bg="#416CA6", fg="#0E1521", activebackground="#85BFF2",
                 activeforeground="black", font="Arial 12 bold", height=2, width=36, command=comando
-            ).place(x=70, y=y)
+            ).place(x=70, y=yPos)
 
-    def criar_janela_tarefa(self, titulo, placeholder, callback):
+    def criarJanelaTarefa(self, titulo, placeholder, callback):
         janela = tk.Toplevel(self.janela)
         janela.title(titulo)
         janela.config(background="#262A40")
@@ -42,12 +42,12 @@ class InterfaceTarefa:
         tk.Label(janela, text='descrição da tarefa', font="Arial 15 bold", bg="#262A40", fg="#F2F2F2").place(x=55, y=35)
 
         campos = {}
-        for i, (label, y) in enumerate([(placeholder[0], 80), (placeholder[1], 110)]):
+        for i, (label, yPos) in enumerate([(placeholder[0], 80), (placeholder[1], 110)]):
             entry = tk.Entry(janela, width=35, fg="#808080")
-            entry.place(x=45, y=y)
+            entry.place(x=45, y=yPos)
             entry.insert(0, label)
-            entry.bind("<FocusIn>", lambda e, entry=entry, text=label: self.on_focus_in(entry, text))
-            entry.bind("<FocusOut>", lambda e, entry=entry, text=label: self.on_focus_out(entry, text))
+            entry.bind("<FocusIn>", lambda e, entry=entry, text=label: self.onFocusIn(entry, text))
+            entry.bind("<FocusOut>", lambda e, entry=entry, text=label: self.onFocusOut(entry, text))
             campos[label] = entry
 
         def enviar():
@@ -64,23 +64,23 @@ class InterfaceTarefa:
             activeforeground="black", font="Arial 10 bold", height=1, width=15, command=enviar
         ).place(x=85, y=150)
 
-    def janela_adicionar_tarefa(self):
-        self.criar_janela_tarefa(
+    def janelaAdicionarTarefa(self):
+        self.criarJanelaTarefa(
             'Adicionar Tarefa',
             ('Nome:', 'Descrição:'),
-            lambda valores: self.gerenciador.adicionar_tarefa(valores['Nome:'], valores['Descrição:'])
+            lambda valores: self.gerenciador.adicionarTarefa(valores['Nome:'], valores['Descrição:'])
         )
 
-    def janela_exibir_tarefa(self):
-        self.exibir_tarefas('Exibir Tarefa')
+    def janelaExibirTarefa(self):
+        self.exibirTarefas('Exibir Tarefa')
 
-    def janela_marcar_concluida(self):
-        self.exibir_tarefas('Marcar Como Concluída', self.gerenciador.marcar_concluida)
+    def janelaMarcarConcluida(self):
+        self.exibirTarefas('Marcar Como Concluída', self.gerenciador.marcarConcluida)
 
-    def janela_excluir_tarefa(self):
-        self.exibir_tarefas('Excluir Tarefa', self.gerenciador.excluir_tarefa)
+    def janelaExcluirTarefa(self):
+        self.exibirTarefas('Excluir Tarefa', self.gerenciador.excluirTarefa)
 
-    def exibir_tarefas(self, titulo, callback=None):
+    def exibirTarefas(self, titulo, callback=None):
         if not self.gerenciador.tarefas:
             messagebox.showinfo('Alerta!', 'Nenhuma tarefa foi adicionada.')
             return
@@ -93,27 +93,28 @@ class InterfaceTarefa:
 
         tk.Label(janela, text='Tarefas:          Descrição:', bg='#262A40', fg='white', font='Arial 15 bold').place(x=27, y=25)
 
-        tarefas, descricoes = '', ''
-        for i, tarefa in enumerate(self.gerenciador.tarefas):
-            nome = ''.join(c + '\u0336' for c in tarefa.nome) if tarefa.concluida else tarefa.nome
-            descricao = ''.join(c + '\u0336' for c in tarefa.descricao) if tarefa.concluida else tarefa.descricao
-            tarefas += f"{i + 1}. {nome}\n"
-            descricoes += f"{descricao}\n"
+        tarefasText = ''
+        descricoesText = ''
+        for i, tarefaObj in enumerate(self.gerenciador.tarefas):
+            nomeText = ''.join(c + '\u0336' for c in tarefaObj.nome) if tarefaObj.concluida else tarefaObj.nome
+            descricaoText = ''.join(c + '\u0336' for c in tarefaObj.descricao) if tarefaObj.concluida else tarefaObj.descricao
+            tarefasText += f"{i + 1}. {nomeText}\n"
+            descricoesText += f"{descricaoText}\n"
 
-        tk.Label(janela, text=tarefas, bg='#262A40', fg='white', font='Arial 12 bold').place(x=38, y=63)
-        tk.Label(janela, text=descricoes, bg='#262A40', fg='white', font='Arial 12 bold').place(x=175, y=63)
+        tk.Label(janela, text=tarefasText, bg='#262A40', fg='white', font='Arial 12 bold').place(x=38, y=63)
+        tk.Label(janela, text=descricoesText, bg='#262A40', fg='white', font='Arial 12 bold').place(x=175, y=63)
 
         if callback:
-            numero_entry = tk.Entry(janela, width=20, fg="#808080")
-            numero_entry.place(x=87, y=130)
-            numero_entry.insert(0, 'Número da Tarefa:')
+            numeroEntry = tk.Entry(janela, width=20, fg="#808080")
+            numeroEntry.place(x=87, y=130)
+            numeroEntry.insert(0, 'Número da Tarefa:')
 
-            numero_entry.bind("<FocusIn>", lambda e: self.on_focus_in(numero_entry, 'Número da Tarefa:'))
-            numero_entry.bind("<FocusOut>", lambda e: self.on_focus_out(numero_entry, 'Número da Tarefa:'))
+            numeroEntry.bind("<FocusIn>", lambda e: self.onFocusIn(numeroEntry, 'Número da Tarefa:'))
+            numeroEntry.bind("<FocusOut>", lambda e: self.onFocusOut(numeroEntry, 'Número da Tarefa:'))
 
             def enviar():
                 try:
-                    indice = int(numero_entry.get()) - 1
+                    indice = int(numeroEntry.get()) - 1
                     callback(indice)
                     messagebox.showinfo('Alerta!', 'Operação realizada com sucesso!')
                     janela.destroy()
@@ -125,12 +126,12 @@ class InterfaceTarefa:
                 activeforeground="black", font="Arial 10 bold", height=1, width=15, command=enviar
             ).place(x=85, y=161)
 
-    def on_focus_in(self, entry, placeholder):
+    def onFocusIn(self, entry, placeholder):
         if entry.get() == placeholder:
             entry.delete(0, tk.END)
             entry.config(fg="black")
 
-    def on_focus_out(self, entry, placeholder):
+    def onFocusOut(self, entry, placeholder):
         if entry.get() == "":
             entry.insert(0, placeholder)
             entry.config(fg="#808080")
