@@ -1,0 +1,121 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Builds made by PyInstaller (onefile, onedir)
+dist/
+build/
+*.manifest
+*.spec
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+*.pkg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.env/
+.venv/
+venv.bak/
+venv_local/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite3
+*.db
+
+# Sensitive files / environment
+.env
+*.env
+.env.local
+.env.*.local
+secrets.json
+
+# mypy / type checking
+.mypy_cache/
+.dmypy.json
+
+# Pyre
+.pyre/
+
+# Rope project
+.ropeproject
+
+# Coverage / report artifacts
+coverage-html/
+coverage.xml
+
+# Static/media build artifacts (if you bundle GUI assets)
+*.pyc
+*.pyo
+
+# Misc
+*.swp
+*.swo
+*.tmp
+
+
